@@ -17,6 +17,10 @@ import {
   Briefcase,
   Award,
   UserCheck,
+  Droplets,
+  Star,
+  Shield,
+  UserCog,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -32,13 +36,20 @@ const menuItems = [
   { id: "employees", label: "Employees", icon: Users },
   { id: "institutions", label: "Institutions", icon: Building2 },
   { id: "locations", label: "Locations", icon: MapPin },
+  { id: "office-types", label: "Office Types", icon: Building2 },
   { id: "offices", label: "Offices", icon: Briefcase },
   { id: "departments", label: "Departments", icon: UserCheck },
   { id: "designations", label: "Designations", icon: Award },
+  { id: "grades", label: "Grades", icon: Star },
+  { id: "blood-groups", label: "Blood Groups", icon: Droplets },
   { id: "id-cards", label: "ID Cards", icon: CreditCard },
 ]
 
-const adminOnlyItems = [{ id: "users", label: "User Management", icon: Settings }]
+const adminOnlyItems = [
+  { id: "users", label: "User Management", icon: UserCog },
+  { id: "roles", label: "Role Management", icon: Shield },
+  { id: "permissions", label: "Permissions", icon: Settings },
+]
 
 export function Sidebar({ currentUser, currentPage, onPageChange, onLogout }: SidebarProps) {
   const [isCollapsed, setIsCollapsed] = useState(false)

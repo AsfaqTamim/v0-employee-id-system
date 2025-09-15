@@ -7,27 +7,25 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Building2, Lock, User } from "lucide-react"
 
 interface LoginFormProps {
-  onLogin: (credentials: { username: string; password: string; role: string }) => void
+  onLogin: (credentials: { username: string; password: string }) => void
 }
 
 export function LoginForm({ onLogin }: LoginFormProps) {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const [role, setRole] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!username || !password || !role) return
+    if (!username || !password) return
 
     setIsLoading(true)
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1000))
-    onLogin({ username, password, role })
+    onLogin({ username, password })
     setIsLoading(false)
   }
 
@@ -77,20 +75,7 @@ export function LoginForm({ onLogin }: LoginFormProps) {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="role">Role</Label>
-              <Select value={role} onValueChange={setRole} required>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select your role" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="admin">Administrator</SelectItem>
-                  <SelectItem value="operator">Operator</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <Button type="submit" className="w-full" disabled={isLoading || !username || !password || !role}>
+            <Button type="submit" className="w-full" disabled={isLoading || !username || !password}>
               {isLoading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
