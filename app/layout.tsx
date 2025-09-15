@@ -16,6 +16,14 @@ export const metadata: Metadata = {
   generator: "v0.app",
 }
 
+function LoadingFallback() {
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+    </div>
+  )
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -24,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans ${inter.variable}`}>
-        <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+        <Suspense fallback={<LoadingFallback />}>{children}</Suspense>
         <Analytics />
       </body>
     </html>
