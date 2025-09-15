@@ -119,7 +119,23 @@
   * {
     @apply border-border outline-ring/50;
   }
+
+  /* Fix double scrollbar issue */
+  html,
   body {
     @apply bg-background text-foreground;
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  /* Ensure no horizontal overflow */
+  body {
+    position: relative;
+  }
+
+  /* Fix any potential container overflow */
+  .container {
+    max-width: 100%;
+    overflow-x: hidden;
   }
 }

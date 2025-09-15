@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Separator } from "@/components/ui/separator"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import {
   Building2,
@@ -139,21 +138,20 @@ function SidebarContent({
         </nav>
       </ScrollArea>
 
-      <Separator />
-
-      {/* Logout */}
-      <div className="p-2">
-        <Button
-          variant="ghost"
-          className={cn(
-            "w-full justify-start gap-3 text-sidebar-foreground hover:bg-destructive hover:text-destructive-foreground",
-            isCollapsed && "justify-center px-2",
-          )}
-          onClick={onLogout}
-        >
-          <LogOut className="w-4 h-4 flex-shrink-0" />
-          {(!isCollapsed || isCollapsed === undefined) && <span>Logout</span>}
-        </Button>
+      <div className="border-t border-sidebar-border">
+        <div className="p-2">
+          <Button
+            variant="ghost"
+            className={cn(
+              "w-full justify-start gap-3 text-sidebar-foreground hover:bg-destructive hover:text-destructive-foreground",
+              isCollapsed && "justify-center px-2",
+            )}
+            onClick={onLogout}
+          >
+            <LogOut className="w-4 h-4 flex-shrink-0" />
+            {(!isCollapsed || isCollapsed === undefined) && <span>Logout</span>}
+          </Button>
+        </div>
       </div>
     </div>
   )
