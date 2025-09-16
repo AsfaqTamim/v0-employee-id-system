@@ -103,8 +103,8 @@ export function Homepage({ onPageChange, onLogin }: HomepageProps) {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Employee Information System</h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <h2 className="font-bold text-gray-900 mb-4 text-2xl">Employee Information System</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto text-sm">
             Search for employee information, request new ID cards, or apply for corrections
           </p>
         </div>
