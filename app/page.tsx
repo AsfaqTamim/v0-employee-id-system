@@ -17,6 +17,11 @@ import { BloodGroupManagement } from "@/components/blood-groups/blood-group-mana
 import { UserManagement } from "@/components/users/user-management"
 import { RoleManagement } from "@/components/roles/role-management"
 import { PermissionManagement } from "@/components/permissions/permission-management"
+import { Homepage } from "@/components/homepage/homepage"
+import { NewIdCardRequest } from "@/components/pages/new-id-card-request"
+import { IdCardCorrection } from "@/components/pages/id-card-correction"
+import { FaqPage } from "@/components/pages/faq-page"
+import { EmployeeDetails } from "@/components/employees/employee-details"
 
 interface User {
   username: string
@@ -25,32 +30,47 @@ interface User {
 
 export default function Home() {
   const [currentUser, setCurrentUser] = useState<User | null>(null)
-  const [currentPage, setCurrentPage] = useState("dashboard")
+  const [currentPage, setCurrentPage] = useState("homepage")
 
   const handleLogin = (credentials: { username: string; password: string }) => {
     // In a real app, this would validate against a backend and determine role
     setCurrentUser({ username: credentials.username, role: "admin" })
+    setCurrentPage("dashboard")
   }
 
   const handleLogout = () => {
     setCurrentUser(null)
-    setCurrentPage("dashboard")
+    setCurrentPage("homepage")
   }
 
-  if (!currentUser) {
+  if (!currentUser && currentPage === "homepage") {
+    return <Homepage onPageChange={setCurrentPage} onLogin={handleLogin} />
+  }
+
+  if (!currentUser && currentPage === "login") {
     return <LoginForm onLogin={handleLogin} />
   }
 
   const renderPage = () => {
     switch (currentPage) {
+      case "homepage":
+        return <Homepage onPageChange={setCurrentPage} onLogin={handleLogin} />
       case "dashboard":
         return <DashboardOverview currentUser={currentUser} />
       case "employees":
-        return <EmployeeManagement />
+        return <EmployeeManagement onViewEmployee={() => setCurrentPage("employee-details")} />
+      case "employee-details":
+        return <EmployeeDetails onBack={() => setCurrentPage("employees")} />
       case "institutions":
         return <InstitutionManagement />
       case "id-cards":
         return <IdCardPrinting />
+      case "new-id-request":
+        return <NewIdCardRequest onBack={() => setCurrentPage("homepage")} />
+      case "id-correction":
+        return <IdCardCorrection onBack={() => setCurrentPage("homepage")} />
+      case "faq":
+        return <FaqPage onBack={() => setCurrentPage("homepage")} />
       case "locations":
         return <LocationManagement />
       case "office-types":
@@ -76,8 +96,17 @@ export default function Home() {
     }
   }
 
+  if (
+    currentPage === "homepage" ||
+    currentPage === "new-id-request" ||
+    currentPage === "id-correction" ||
+    currentPage === "faq"
+  ) {
+    return <div className="min-h-screen bg-background">{renderPage()}</div>
+  }
+
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex bg-background">
       <Sidebar
         currentUser={currentUser}
         currentPage={currentPage}
@@ -85,7 +114,7 @@ export default function Home() {
         onLogout={handleLogout}
       />
       <main className="flex-1 overflow-auto">
-        <div className="p-6">{renderPage()}</div>
+        <div className="p-4 md:p-6 pt-0 md:pt-6">{renderPage()}</div>
       </main>
     </div>
   )

@@ -1,9 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import {
   Building2,
   Users,
@@ -21,6 +22,7 @@ import {
   Star,
   Shield,
   UserCog,
+  Menu,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -51,38 +53,59 @@ const adminOnlyItems = [
   { id: "permissions", label: "Permissions", icon: Settings },
 ]
 
-export function Sidebar({ currentUser, currentPage, onPageChange, onLogout }: SidebarProps) {
-  const [isCollapsed, setIsCollapsed] = useState(false)
-
+function SidebarContent({
+  currentUser,
+  currentPage,
+  onPageChange,
+  onLogout,
+  isCollapsed,
+  setIsCollapsed,
+  onClose,
+}: {
+  currentUser: { username: string; role: string }
+  currentPage: string
+  onPageChange: (page: string) => void
+  onLogout: () => void
+  isCollapsed?: boolean
+  setIsCollapsed?: (collapsed: boolean) => void
+  onClose?: () => void
+}) {
   const allMenuItems = [...menuItems, ...(currentUser.role === "admin" ? adminOnlyItems : [])]
+
+  const handlePageChange = (page: string) => {
+    onPageChange(page)
+    onClose?.() // Close mobile sheet when navigating
+  }
 
   return (
     <div
       className={cn(
-        "flex flex-col h-screen bg-sidebar border-r border-sidebar-border transition-all duration-300",
-        isCollapsed ? "w-16" : "w-64",
+        "flex flex-col h-full bg-sidebar border-r border-sidebar-border",
+        isCollapsed !== undefined && (isCollapsed ? "w-16" : "w-64"),
       )}
     >
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-sidebar-border">
-        {!isCollapsed && (
+        {(!isCollapsed || isCollapsed === undefined) && (
           <div className="flex items-center gap-2">
             <Building2 className="w-6 h-6 text-sidebar-accent" />
             <span className="font-semibold text-sidebar-foreground">EIMS</span>
           </div>
         )}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setIsCollapsed(!isCollapsed)}
-          className="text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-        >
-          {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
-        </Button>
+        {setIsCollapsed && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className="text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+          >
+            {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+          </Button>
+        )}
       </div>
 
       {/* User Info */}
-      {!isCollapsed && (
+      {(!isCollapsed || isCollapsed === undefined) && (
         <div className="p-4 bg-sidebar-primary">
           <div className="text-sm font-medium text-sidebar-primary-foreground">{currentUser.username}</div>
           <div className="text-xs text-sidebar-primary-foreground/70 capitalize">{currentUser.role}</div>
@@ -106,10 +129,10 @@ export function Sidebar({ currentUser, currentPage, onPageChange, onLogout }: Si
                   !isActive && "hover:bg-sidebar-primary hover:text-sidebar-primary-foreground",
                   isCollapsed && "justify-center px-2",
                 )}
-                onClick={() => onPageChange(item.id)}
+                onClick={() => handlePageChange(item.id)}
               >
                 <Icon className="w-4 h-4 flex-shrink-0" />
-                {!isCollapsed && <span>{item.label}</span>}
+                {(!isCollapsed || isCollapsed === undefined) && <span>{item.label}</span>}
               </Button>
             )
           })}
@@ -129,9 +152,76 @@ export function Sidebar({ currentUser, currentPage, onPageChange, onLogout }: Si
           onClick={onLogout}
         >
           <LogOut className="w-4 h-4 flex-shrink-0" />
-          {!isCollapsed && <span>Logout</span>}
+          {(!isCollapsed || isCollapsed === undefined) && <span>Logout</span>}
         </Button>
       </div>
+    </div>
+  )
+}
+
+export function Sidebar({ currentUser, currentPage, onPageChange, onLogout }: SidebarProps) {
+  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      const mobile = window.innerWidth < 768 // md breakpoint
+      setIsMobile(mobile)
+      if (mobile) {
+        setIsCollapsed(false) // Reset collapse state on mobile
+      }
+    }
+
+    checkScreenSize()
+    window.addEventListener("resize", checkScreenSize)
+    return () => window.removeEventListener("resize", checkScreenSize)
+  }, [])
+
+  // Mobile sidebar
+  if (isMobile) {
+    return (
+      <>
+        {/* Mobile header with menu button */}
+        <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-background border-b h-14 flex items-center px-4">
+          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="sm" className="mr-2">
+                <Menu className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="p-0 w-64">
+              <SidebarContent
+                currentUser={currentUser}
+                currentPage={currentPage}
+                onPageChange={onPageChange}
+                onLogout={onLogout}
+                onClose={() => setMobileOpen(false)}
+              />
+            </SheetContent>
+          </Sheet>
+          <div className="flex items-center gap-2">
+            <Building2 className="w-5 h-5 text-primary" />
+            <span className="font-semibold">EIMS</span>
+          </div>
+        </div>
+        {/* Spacer for fixed header */}
+        <div className="h-14 md:hidden" />
+      </>
+    )
+  }
+
+  // Desktop sidebar
+  return (
+    <div className="hidden md:block">
+      <SidebarContent
+        currentUser={currentUser}
+        currentPage={currentPage}
+        onPageChange={onPageChange}
+        onLogout={onLogout}
+        isCollapsed={isCollapsed}
+        setIsCollapsed={setIsCollapsed}
+      />
     </div>
   )
 }
