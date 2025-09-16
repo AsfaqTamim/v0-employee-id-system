@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { LoginForm } from "@/components/auth/login-form"
-import { Sidebar } from "@/components/layout/sidebar"
+import { AdminSidebar } from "@/components/layout/admin-sidebar"
 import { DashboardOverview } from "@/components/dashboard/dashboard-overview"
 import { EmployeeManagement } from "@/components/employees/employee-management"
 import { InstitutionManagement } from "@/components/institutions/institution-management"
@@ -106,16 +106,14 @@ export default function Home() {
   }
 
   return (
-    <div className="flex bg-background">
-      <Sidebar
+    <div className="flex h-screen bg-background">
+      <AdminSidebar
         currentUser={currentUser}
         currentPage={currentPage}
         onPageChange={setCurrentPage}
         onLogout={handleLogout}
       />
-      <main className="flex-1 overflow-auto">
-        <div className="p-4 md:p-6 pt-0 md:pt-6">{renderPage()}</div>
-      </main>
+      <main className="flex-1 overflow-hidden">{renderPage()}</main>
     </div>
   )
 }
