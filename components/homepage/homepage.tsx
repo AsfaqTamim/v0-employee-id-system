@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Navbar } from "@/components/layout/navbar"
 import { Footer } from "@/components/layout/footer"
-import { Search, CreditCard, FileEdit, HelpCircle, ArrowRight, Users, Building2, Shield, Zap } from "lucide-react"
+import { Search, CreditCard, FileEdit, HelpCircle, ArrowRight } from "lucide-react"
 
 interface Employee {
   id: string
@@ -196,81 +196,6 @@ export function Homepage({ onPageChange, onLogin }: HomepageProps) {
             )}
           </section>
         )}
-
-        <section id="features" className="container py-24">
-          <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
-            <h2 className="font-bold text-3xl leading-[1.1] sm:text-3xl md:text-6xl">Features</h2>
-            <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-              Comprehensive employee management system with modern features
-            </p>
-          </div>
-          <div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3 mt-16">
-            <div className="relative overflow-hidden rounded-lg border bg-background p-6">
-              <div className="flex h-[180px] flex-col justify-between rounded-md">
-                <div className="space-y-2">
-                  <Users className="h-12 w-12 text-primary" />
-                  <h3 className="font-bold">Employee Management</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Complete employee database with detailed profiles and information management
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="relative overflow-hidden rounded-lg border bg-background p-6">
-              <div className="flex h-[180px] flex-col justify-between rounded-md">
-                <div className="space-y-2">
-                  <CreditCard className="h-12 w-12 text-primary" />
-                  <h3 className="font-bold">ID Card System</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Digital ID card generation, printing, and management with correction requests
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="relative overflow-hidden rounded-lg border bg-background p-6">
-              <div className="flex h-[180px] flex-col justify-between rounded-md">
-                <div className="space-y-2">
-                  <Building2 className="h-12 w-12 text-primary" />
-                  <h3 className="font-bold">Organization Structure</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Manage departments, offices, designations, and organizational hierarchy
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="relative overflow-hidden rounded-lg border bg-background p-6">
-              <div className="flex h-[180px] flex-col justify-between rounded-md">
-                <div className="space-y-2">
-                  <Shield className="h-12 w-12 text-primary" />
-                  <h3 className="font-bold">Role-Based Access</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Secure access control with role-based permissions and user management
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="relative overflow-hidden rounded-lg border bg-background p-6">
-              <div className="flex h-[180px] flex-col justify-between rounded-md">
-                <div className="space-y-2">
-                  <Search className="h-12 w-12 text-primary" />
-                  <h3 className="font-bold">Quick Search</h3>
-                  <p className="text-sm text-muted-foreground">Fast employee lookup and information retrieval system</p>
-                </div>
-              </div>
-            </div>
-            <div className="relative overflow-hidden rounded-lg border bg-background p-6">
-              <div className="flex h-[180px] flex-col justify-between rounded-md">
-                <div className="space-y-2">
-                  <Zap className="h-12 w-12 text-primary" />
-                  <h3 className="font-bold">Modern Interface</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Clean, responsive design with intuitive user experience
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
       </main>
 
       <Footer />
