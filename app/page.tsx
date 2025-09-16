@@ -106,7 +106,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex min-h-screen bg-background">
       <AdminSidebar
         currentUser={currentUser}
         currentPage={currentPage}
